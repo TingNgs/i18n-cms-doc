@@ -1,0 +1,151 @@
+---
+sidebar_position: 3
+---
+
+# Configuration
+
+All configuration files are located in `.i18n-cms` folder in root
+
+## config.json
+Required
+
+| Key             | Required  |   Value                      |                 
+|-----------------|-----------|------------------------------|
+| fileType        | *         | `json`                       | 
+| fileStructure   | *         | `{lng}/{ns}`\|`{ns}/{lng}`   |
+| basePath        |           | string                       |
+| defaultLanguage |           | string                       |
+| useCustomPath   |           | boolean                      |
+| namespaces      |           | string[]                     |
+| languages       |           | string[]                     |
+
+
+We will load your namespaces and languages from `${basePath}/${fileStructure}.${fileType}` by default.
+
+In the `basePath` directory, these file / directory will be ignored.
+- any file without a directory
+- directory starting with `.` 
+
+
+If your translation files are not structured as `${basePath}/${fileStructure}.${fileType}`, you can 
+- set `useCustomPath` to `true`
+- define `namespaces` and `languages`
+
+And add `.i18n-cms/getCustomPath.js`
+
+## getCustomPath.js
+Not required by default. Only needed when
+- `useCustomPath` is `true`
+- `namespaces` and `languages` is defined
+
+in `.i18n-cms/config.json`
+
+Export a function to get the path of translation file by language and namespace
+
+```js title='.i18n-cms/getCustomPath.js'
+/** 
+ * Get the path of translation file by language and namespace
+ * @param {Object} data
+ * @param {string} data.namespace - The namespace of translation file
+ * @param {string} data.language - The language of translation file
+ * @param {Object} data.repoConfig - config defined in `.i18n-cms/config.json`
+ * @return {string} path of translation file
+ */
+
+export default function getCustomPath({ namespace, language, repoConfig }) {
+  const { fileStructure, fileType, basePath, useCustomPath } = repoConfig;
+  const filePath = fileStructure
+          .replace('{lng}', language)
+          .replace('{ns}', namespace)
+          .concat(`.${fileType}`);
+
+  const fullPath = `${basePath ? `${basePath}/` : ''}${filePath}`;
+  return fullPath;
+}
+```
+
+
+## Example
+
+### Example with default file structure
+
+```json title=".i18n-cms/config.json"
+{
+  "fileStructure": "{lng}/{ns}",
+  "fileType": "json",
+  "basePath": "public/locales",
+  "defaultLanguage": "en",
+}
+```
+
+```md title="File structure:"
+- public
+  - locales
+    - en
+      - translationA.json
+      - translationB.json
+    - zh
+      - translationA.json
+      - translationB.json
+    - abc.json  <-- ignored
+    - .xxxx/config.json  <-- ignored
+
+```
+
+
+
+### Example with custom file structure
+
+```json title=".i18n-cms/config.json"
+{
+  "fileStructure": "{lng}/{ns}",
+  "fileType": "json",
+  "defaultLanguage": "en",
+  "useCustomPath": true,
+  "namespaces": [
+    "common",
+    "featureA",
+    "featureB",
+  ],
+  "languages": [
+    "en",
+    "zh"
+  ]
+}
+```
+
+```md title="File structure:"
+- locales
+  - en.json
+  - zh.json
+- feature
+  - featureA
+    - locales
+      - en.json
+      - zh.json
+  - featureB
+    - locales
+      - en.json
+      - zh.json
+```
+```js title='.i18n-cms/getCustomPath.js'
+/** 
+ * Get the path of translation file by language and namespace
+ * @param {Object} data
+ * @param {string} data.namespace - The namespace of translation file
+ * @param {string} data.language - The language of translation file
+ * @param {Object} data.repoConfig - config defined in `.i18n-cms/config.json`
+ * @return {string} path of translation file
+ */
+export default function getCustomPath({ namespace, language, repoConfig }) {
+  switch (namespace) {
+    case "common":
+      return `locales/${language}.${repoConfig.fileType}`;
+    default:
+      // Define a generic default return value, 
+      // so you don't need to change any code if you're adding any new feature
+      return `feature/${namespace}/locales/${language}.${repoConfig.fileType}`;
+  }
+}
+```
+
