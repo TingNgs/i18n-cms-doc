@@ -10,7 +10,7 @@ sidebar_position: 2
 
 If your repository is not created by i18n-cms, please make sure you already setup your existing repository.
 
-Add `.18n-cms/config.json` to your repository. Read more about [how to setup `config.json`](../configuration)
+Add `.18n-cms/config.json` to your repository. Read more about [how to setup `config.json`](/docs/configuration)
 
 ## Import you existing repository by github url
 

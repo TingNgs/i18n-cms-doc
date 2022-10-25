@@ -49,10 +49,11 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: 'i18n cms',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'i18n-cms-logo',
           src: 'img/logo.svg',
+          href:'https://i18n-cms.pages.dev/',
         },
         items: [
           {
