@@ -57,12 +57,6 @@ const config = {
         },
         items: [
           {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Doc',
-          },
-          {
             href: 'https://i18n-cms.pages.dev/',
             label: 'Get Started',
             position: 'right',
