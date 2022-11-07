@@ -5,14 +5,14 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
-const config = {
+const config = { 
   title: 'i18n cms doc',
   tagline: 'Dinosaurs are cool',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -26,6 +26,24 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/img/favicon-light.ico',
+        media: "(prefers-color-scheme: light)"
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/img/favicon-dark.ico',
+        media: "(prefers-color-scheme: dark)"
+      },
+    }
+  ],
 
   presets: [
     [
@@ -53,6 +71,7 @@ const config = {
         logo: {
           alt: 'i18n-cms-logo',
           src: 'img/logo.svg',
+          srcDark: 'img/logo-dark.svg',
           href:'https://i18n-cms.pages.dev/',
         },
         items: [
@@ -68,6 +87,7 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+  
     noIndex: true,
 };
 
