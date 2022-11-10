@@ -11,13 +11,26 @@ All configuration files are located in `.i18n-cms` folder in root
 
 | Key             | Required  |
 |-----------------|-----------|
+| languages       | *         |
+| defaultLanguage | *         |
 | fileType        | *         |
-| fileStructure   | *         |
-| basePath        |           |
-| defaultLanguage |           |
+| pattern         |           |
 | useCustomPath   |           |
 | namespaces      |           |
-| languages       |           |
+
+### defaultLanguage
+Required <br/>
+`string` <br/>
+For example : `en`<br/>
+Specify the default language.
+We will sort the translation key by order of the translation file in the default language
+
+### languages
+Required <br/>
+`string[]` <br/>
+Specify the existing languages of your translations file.<br/>
+`languages` value will be updated if your add/remove languages through this app.<br/>
+If you add any languages manually, please also update `languages` value in this config file.
 
 ### fileType
 Required <br/>
@@ -25,33 +38,26 @@ Specify the file type of your translation files. We only support `json` and `yam
 Valid options:
 - `json`
 - `yaml`
+- `json_flatten`
+- `yaml_flatten`
 
-### fileStructure
-Required <br/>
-Specify the file structure of your translation files. <br/>
-Valid options:
-- `{lng}/{ns}`
-- `{ns}/{lng}`
-
-### basePath
+### pattern
+Required if `useCustomPath` is `false` or `undefined`<br/>
 `string`<br/>
-Specify the path to your translation folder.
+Specify the file path pattern to your translation file. <br/>
+`pattern` must contain `:ns` and `:lng` named segments representing namespace and language.
 
-
-We will load your namespaces and languages from `${basePath}/${fileStructure}.${fileType}` by default.<br/>
-In the `basePath` directory, these file / directory will be ignored.
-- any file without a directory
-- directory starting with `.` 
-
+We will load your namespaces and languages from `${pattern}.${fileType}` by default.<br/>
 Check `useCustomPath` below if your translation files are not structured like this.
 
 #### Example with default file structure
 
 ```json title=".i18n-cms/config.json"
 {
-  "fileStructure": "{lng}/{ns}",
   "fileType": "json",
-  "basePath": "public/locales",
+  "pattern": "public/locales/:lng/:ns",
+  "languages": ["en", "zh"],
+  "defaultLanguage": "en"
   ...
 }
 ```
@@ -65,51 +71,35 @@ Check `useCustomPath` below if your translation files are not structured like th
     - zh
       - translationA.json
       - translationB.json
-    - abc.json  <-- ignored
-    - .xxxx/config.json  <-- ignored
-
+    - vi <-- ignored, because 'vi' not defined in 'languages'
+      - translationA.json
+      - translationB.json
 ```
-
-
-### defaultLanguage
-`string` <br/>
-For example : `en`<br/>
-Specify the default language.
-We will sort the translation key by order of the translation file in the default language
-
 
 ### useCustomPath
 `boolean` <br/>
-If your translation files are not structured as `${basePath}/${fileStructure}.${fileType}`, you can 
+If your translation files are not structured as `${pattern}.${fileType}`, you can 
 - set `useCustomPath` to `true`
-- define `namespaces` and `languages` in `.i18n-cms/config.json`
+- define `namespaces` in `.i18n-cms/config.json`
 - Add `.i18n-cms/getCustomPath.js`
-
-### languages
-`string[]` <br/>
-Only required if `useCustomPath` is `true`<br/>
-Specify the existing languages of your translations file.<br/>
-`languages` value will be updated if your add/remove languages through this app.<br/>
-If you add any languages manually, please also update `languages` value in this config file.
 
 
 ### namespaces
 `string[]`  <br/>
-Only required if `useCustomPath` is `true`<br/>
+Required if `useCustomPath` is `true`<br/>
 Specify the existing namespaces of your translations file.<br/>
 `namespaces` value will be updated if your add/remove languages through this app.<br/>
 If you add any namespaces manually, please also update `namespaces` value in this config file.
 
 
 ## getCustomPath.js
-Not required by default. Only needed when
+Not required by default. Only work when
 - `useCustomPath` is `true`
-- `namespaces` and `languages` is defined
+- `namespaces` is defined
 
 in `.i18n-cms/config.json`
 
-Export a function to get the path of translation file by language and namespace. Default get path function looks like
-
+Export a function to get the path of translation file by language and namespace.
 ```js title='.i18n-cms/getCustomPath.js'
 /** 
  * Get the path of translation file by language and namespace
@@ -119,35 +109,20 @@ Export a function to get the path of translation file by language and namespace.
  * @param {Object} data.repoConfig - config defined in `.i18n-cms/config.json`
  * @return {string} path of translation file
  */
-
-export default function getCustomPath({ namespace, language, repoConfig }) {
-  const { fileStructure, fileType, basePath, useCustomPath } = repoConfig;
-  const filePath = fileStructure
-          .replace('{lng}', language)
-          .replace('{ns}', namespace)
-          .concat(`.${fileType}`);
-
-  const fullPath = `${basePath ? `${basePath}/` : ''}${filePath}`;
-  return fullPath;
-}
 ```
 
 ### Example with custom file structure
 
 ```json title=".i18n-cms/config.json"
 {
-  "fileStructure": "{lng}/{ns}",
-  "fileType": "json",
   "defaultLanguage": "en",
+  "languages": ["en", "zh"],
+  "fileType": "json",
   "useCustomPath": true,
   "namespaces": [
     "common",
     "featureA",
     "featureB",
-  ],
-  "languages": [
-    "en",
-    "zh"
   ]
 }
 ```

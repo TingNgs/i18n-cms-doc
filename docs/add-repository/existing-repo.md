@@ -4,8 +4,6 @@ sidebar_position: 2
 
 # Import existing repository
 
-
-
 ## Setup your existing repository
 
 If your repository is not created by i18n-cms, please make sure you already setup your existing repository.

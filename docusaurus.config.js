@@ -44,7 +44,7 @@ const config = {
       },
     }
   ],
-
+  noIndex:true,
   presets: [
     [
       'classic',
@@ -87,8 +87,6 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
-  
-    noIndex: true,
 };
 
 module.exports = config;
