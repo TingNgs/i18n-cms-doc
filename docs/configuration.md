@@ -111,6 +111,16 @@ Export a function to get the path of translation file by language and namespace.
  */
 ```
 
+`FILE_TYPE_MAP_DATA` is a global value that you can access in the function.
+```json title='FILE_TYPE_MAP_DATA'
+{
+  "json":{"ext":"json","label":"JSON"},
+  "yaml":{"ext":"yaml","label":"YAML"},
+  "json_flatten":{"ext":"json","label":"JSON (flatten)"},
+  "yaml_flatten":{"ext":"yaml","label":"YAML (flatten)"}
+}
+```
+
 ### Example with custom file structure
 
 ```json title=".i18n-cms/config.json"
@@ -151,13 +161,12 @@ Export a function to get the path of translation file by language and namespace.
  * @return {string} path of translation file
  */
 export default function getCustomPath({ namespace, language, repoConfig }) {
+  const ext = FILE_TYPE_MAP_DATA[repoConfig.fileType].ext;
   switch (namespace) {
     case "common":
-      return `locales/${language}.${repoConfig.fileType}`;
+      return `locales/${language}.${ext}`;
     default:
-      // Define a generic default return value, 
-      // so you don't need to change any code if you're adding any new feature
-      return `feature/${namespace}/locales/${language}.${repoConfig.fileType}`;
+      return `feature/${namespace}/locales/${language}.${ext}`;
   }
 }
 ```
