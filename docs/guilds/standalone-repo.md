@@ -8,13 +8,13 @@ sidebar_position: 1
 
 For example:
 
-The main repository of this app: https://github.com/TingNgs/i18n-cms
+The main repository of this app: https://github.com/i18n-cms/i18n-cms
 
-The i18n repository of this app: https://github.com/TingNgs/i18n-cms-locales
+The i18n repository of this app: https://github.com/i18n-cms/i18n-cms-locales
 
 
 ```cmd title="Add submodule by running this in the main repository"
-git submodule add https://github.com/TingNgs/i18n-cms-locales public/locales
+git submodule add https://github.com/i18n-cms/i18n-cms-locales public/locales
 ```
 
 Learn more about [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
@@ -24,7 +24,7 @@ Learn more about [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submod
 ## Deploy by Github action 
 ### aws s3
 
-[Example](https://github.com/TingNgs/i18n-cms-locales/blob/main/.github/workflows/aws-s3.yml) (Using [S3-sync](https://github.com/marketplace/actions/s3-sync))<br/>
+[Example](https://github.com/i18n-cms/i18n-cms-locales/blob/main/.github/workflows/aws-s3.yml) (Using [S3-sync](https://github.com/marketplace/actions/s3-sync))<br/>
 ```yml
 name: Upload to aws s3
 
@@ -50,7 +50,7 @@ Outcome: https://i18n-cms-locales.s3.amazonaws.com/en/common.json
 
 ### gcp cloud storage
 
-[Example](https://github.com/TingNgs/i18n-cms-locales/blob/main/.github/workflows/gcp-cloud-storage.yml) (Using [Google Cloud Storage Bucket Sync](https://github.com/marketplace/actions/google-cloud-storage-bucket-sync-gcp-gcs))<br/>
+[Example](https://github.com/i18n-cms/i18n-cms-locales/blob/main/.github/workflows/gcp-cloud-storage.yml) (Using [Google Cloud Storage Bucket Sync](https://github.com/marketplace/actions/google-cloud-storage-bucket-sync-gcp-gcs))<br/>
 ```yml
 name: Upload to gcp cloud storage
 
