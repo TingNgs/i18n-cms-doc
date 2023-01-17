@@ -10,7 +10,7 @@ Integrate this app into your GitHub repository, and help you manage the translat
 All translations are stored in your GitHub repository for better versioning and publishing.
 
 ## What you'll need
-- A GitHub account
+- A GitHub / GitLab / Bitbucket account
 
 ## Getting Started
 
@@ -22,7 +22,7 @@ You can
 - import you existing repository
 
 
-Authenticate with GitHub and add a repository by
+Authenticate with GitHub / GitLab / Bitbucket and add a repository by
 - [Create a new repository](add-repository/new-repo.md)
 - [Import existing repository](add-repository/existing-repo.md)
 
